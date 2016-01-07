@@ -24,7 +24,7 @@ def get_kodi_json(method, params):
 def start_info_actions(infos, params):
     for info in infos:
         if info == 'autocomplete':
-            data = AutoCompletion.get_autocomplete_items(params["id"]), "AutoComplete"
+            data = AutoCompletion.get_autocomplete_items(params["id"], params.get("limit", 10)), "AutoComplete"
         elif info == 'selectautocomplete':
             resolve_url(params.get("handle"))
             try:
