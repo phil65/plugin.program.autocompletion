@@ -22,11 +22,6 @@ def get_kodi_json(method, params):
 
 
 def start_info_actions(infos, params):
-    if "prefix" in params and (not params["prefix"].endswith('.')) and (params["prefix"] is not ""):
-        params["prefix"] = params["prefix"] + '.'
-    # NOTICE: compatibility
-    if "imdbid" in params and "imdb_id" not in params:
-        params["imdb_id"] = params["imdbid"]
     for info in infos:
         if info == 'autocomplete':
             data = AutoCompletion.get_autocomplete_items(params["id"]), "AutoComplete"
