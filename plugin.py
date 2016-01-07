@@ -32,10 +32,10 @@ def start_info_actions(infos, params):
                 window = xbmcgui.Window(window_id)
             except:
                 return None
+            window.setFocusId(300)
             get_kodi_json(method="Input.SendText",
                           params='{"text":"%s", "done":false}' % params.get("id"))
             # xbmc.executebuiltin("SendClick(103,32)")
-            window.setFocusId(300)
         listitems, prefix = data
         pass_list_to_skin(name=prefix,
                           data=listitems,
