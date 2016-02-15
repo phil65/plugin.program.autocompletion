@@ -24,7 +24,7 @@ def get_kodi_json(method, params):
 def start_info_actions(infos, params):
     for info in infos:
         if info == 'autocomplete':
-            data = AutoCompletion.get_autocomplete_items(params["id"], params.get("limit", 10)), "AutoComplete"
+            listitems = AutoCompletion.get_autocomplete_items(params["id"], params.get("limit", 10))
         elif info == 'selectautocomplete':
             resolve_url(params.get("handle"))
             try:
@@ -35,34 +35,28 @@ def start_info_actions(infos, params):
             window.setFocusId(300)
             get_kodi_json(method="Input.SendText",
                           params='{"text":"%s", "done":false}' % params.get("id"))
+            return None
             # xbmc.executebuiltin("SendClick(103,32)")
-        listitems, name = data
-        pass_list_to_skin(name=name,
-                          data=listitems,
+        pass_list_to_skin(data=listitems,
                           handle=params.get("handle", ""),
                           limit=params.get("limit", 20))
 
 
-def pass_list_to_skin(name="", data=[], handle=None, limit=False):
+def pass_list_to_skin(data=[], handle=None, limit=False):
     if data and limit and int(limit) < len(data):
         data = data[:int(limit)]
     if not handle:
         return None
     if data:
         items = create_listitems(data)
-        itemlist = [(item.getProperty("path"), item, bool(item.getProperty("directory"))) for item in items]
+        items = [(i.getProperty("path"), i, bool(i.getProperty("directory"))) for i in items]
         xbmcplugin.addDirectoryItems(handle=handle,
-                                     items=itemlist,
-                                     totalItems=len(itemlist))
+                                     items=items,
+                                     totalItems=len(items))
     xbmcplugin.endOfDirectory(handle)
 
 
 def create_listitems(data=None):
-    INT_INFOLABELS = ["year", "episode", "season", "top250", "tracknumber", "playcount", "overlay"]
-    FLOAT_INFOLABELS = ["rating"]
-    STRING_INFOLABELS = ["genre", "director", "mpaa", "plot", "plotoutline", "title", "originaltitle",
-                         "sorttitle", "duration", "studio", "tagline", "writer", "tvshowtitle", "premiered",
-                         "status", "code", "aired", "credits", "lastplayed", "album", "votes", "trailer", "dateadded"]
     if not data:
         return []
     itemlist = []
@@ -72,43 +66,12 @@ def create_listitems(data=None):
             if not value:
                 continue
             value = unicode(value)
-            if key.lower() in ["name", "label"]:
+            if key.lower() in ["label"]:
                 listitem.setLabel(value)
-            elif key.lower() in ["label2"]:
-                listitem.setLabel2(value)
-            elif key.lower() in ["title"]:
-                listitem.setLabel(value)
-                listitem.setInfo('video', {key.lower(): value})
-            elif key.lower() in ["thumb"]:
-                listitem.setThumbnailImage(value)
-                listitem.setArt({key.lower(): value})
-            elif key.lower() in ["icon"]:
-                listitem.setIconImage(value)
-                listitem.setArt({key.lower(): value})
             elif key.lower() in ["path"]:
-                listitem.setPath(path=value)
-                # listitem.setProperty('%s' % (key), value)
-            # elif key.lower() in ["season", "episode"]:
-            #     listitem.setInfo('video', {key.lower(): int(value)})
-            #     listitem.setProperty('%s' % (key), value)
-            elif key.lower() in ["poster", "banner", "fanart", "clearart", "clearlogo", "landscape",
-                                 "discart", "characterart", "tvshow.fanart", "tvshow.poster",
-                                 "tvshow.banner", "tvshow.clearart", "tvshow.characterart"]:
-                listitem.setArt({key.lower(): value})
-            elif key.lower() in INT_INFOLABELS:
-                try:
-                    listitem.setInfo('video', {key.lower(): int(value)})
-                except:
-                    pass
-            elif key.lower() in STRING_INFOLABELS:
-                listitem.setInfo('video', {key.lower(): value})
-            elif key.lower() in FLOAT_INFOLABELS:
-                try:
-                    listitem.setInfo('video', {key.lower(): "%1.1f" % float(value)})
-                except:
-                    pass
-            # else:
-            listitem.setProperty('%s' % (key), value)
+                path = "plugin://plugin.program.autocompletion/?info=selectautocomplete&&id=%s" % value
+                listitem.setPath(path=path)
+                listitem.setProperty('%s' % (key), path)
         listitem.setProperty("index", str(count))
         itemlist.append(listitem)
     return itemlist
@@ -132,10 +95,8 @@ class Main:
     def _parse_argv(self):
         args = sys.argv[2][1:]
         self.handle = int(sys.argv[1])
-        self.control = "plugin"
         self.infos = []
-        self.params = {"handle": self.handle,
-                       "control": self.control}
+        self.params = {"handle": self.handle}
         if args.startswith("---"):
             delimiter = "&"
             args = args[3:]
