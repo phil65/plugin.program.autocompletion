@@ -68,10 +68,10 @@ def create_listitems(data=None):
             value = unicode(value)
             if key.lower() in ["label"]:
                 listitem.setLabel(value)
-            elif key.lower() in ["path"]:
+            elif key.lower() in ["search_string"]:
                 path = "plugin://plugin.program.autocompletion/?info=selectautocomplete&&id=%s" % value
                 listitem.setPath(path=path)
-                listitem.setProperty('%s' % (key), path)
+                listitem.setProperty('path', path)
         listitem.setProperty("index", str(count))
         itemlist.append(listitem)
     return itemlist
