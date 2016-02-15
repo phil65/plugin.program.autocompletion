@@ -8,7 +8,7 @@ import xbmc
 import xbmcgui
 import xbmcplugin
 import xbmcaddon
-import simplejson
+import simplejson as json
 import AutoCompletion
 
 ADDON = xbmcaddon.Addon()
@@ -18,7 +18,7 @@ ADDON_VERSION = ADDON.getAddonInfo('version')
 def get_kodi_json(method, params):
     json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "%s", "params": %s, "id": 1}' % (method, params))
     json_query = unicode(json_query, 'utf-8', errors='ignore')
-    return simplejson.loads(json_query)
+    return json.loads(json_query)
 
 
 def start_info_actions(infos, params):
@@ -36,15 +36,14 @@ def start_info_actions(infos, params):
             get_kodi_json(method="Input.SendText",
                           params='{"text":"%s", "done":false}' % params.get("id"))
             # xbmc.executebuiltin("SendClick(103,32)")
-        listitems, prefix = data
-        pass_list_to_skin(name=prefix,
+        listitems, name = data
+        pass_list_to_skin(name=name,
                           data=listitems,
-                          prefix=params.get("prefix", ""),
                           handle=params.get("handle", ""),
                           limit=params.get("limit", 20))
 
 
-def pass_list_to_skin(name="", data=[], prefix="", handle=None, limit=False):
+def pass_list_to_skin(name="", data=[], handle=None, limit=False):
     if data and limit and int(limit) < len(data):
         data = data[:int(limit)]
     if not handle:
