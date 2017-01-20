@@ -63,7 +63,7 @@ def create_listitems(data=None):
         return []
     itemlist = []
     for (count, result) in enumerate(data):
-        listitem = xbmcgui.ListItem('%s' % (str(count)))
+        listitem = xbmcgui.ListItem(str(count))
         for (key, value) in result.iteritems():
             if not value:
                 continue
