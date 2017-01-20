@@ -26,7 +26,10 @@ def start_info_actions(infos, params):
         if info == 'autocomplete':
             listitems = AutoCompletion.get_autocomplete_items(params["id"], params.get("limit", 10))
         elif info == 'selectautocomplete':
-            resolve_url(params.get("handle"))
+            if params.get("handle"):
+                xbmcplugin.setResolvedUrl(handle=int(params.get("handle")),
+                                          succeeded=False,
+                                          listitem=xbmcgui.ListItem())
             try:
                 window_id = xbmcgui.getCurrentWindowDialogId()
                 window = xbmcgui.Window(window_id)
@@ -77,39 +80,24 @@ def create_listitems(data=None):
     return itemlist
 
 
-def resolve_url(handle):
-    if handle:
-        xbmcplugin.setResolvedUrl(handle=int(handle),
-                                  succeeded=False,
-                                  listitem=xbmcgui.ListItem())
-
-
-class Main:
-
-    def __init__(self):
-        xbmc.log("version %s started" % ADDON_VERSION)
-        self._parse_argv()
-        if self.infos:
-            start_info_actions(self.infos, self.params)
-
-    def _parse_argv(self):
-        args = sys.argv[2][1:]
-        self.handle = int(sys.argv[1])
-        self.infos = []
-        self.params = {"handle": self.handle}
-        delimiter = "&&"
-        for arg in args.split(delimiter):
-            param = arg.replace('"', '').replace("'", " ")
-            if param.startswith('info='):
-                self.infos.append(param[5:])
-            else:
-                try:
-                    self.params[param.split("=")[0].lower()] = "=".join(param.split("=")[1:]).strip()
-                except:
-                    pass
-
-
 if (__name__ == "__main__"):
-    Main()
+    xbmc.log("version %s started" % ADDON_VERSION)
+    args = sys.argv[2][1:]
+    handle = int(sys.argv[1])
+    infos = []
+    params = {"handle": handle}
+    delimiter = "&&"
+    for arg in args.split(delimiter):
+        param = arg.replace('"', '').replace("'", " ")
+        if param.startswith('info='):
+            infos.append(param[5:])
+        else:
+            try:
+                params[param.split("=")[0].lower()] = "=".join(param.split("=")[1:]).strip()
+            except:
+                pass
+    if infos:
+        start_info_actions(infos, params)
+
 xbmc.log('finished')
 
