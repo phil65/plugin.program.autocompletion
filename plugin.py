@@ -49,9 +49,8 @@ def pass_list_to_skin(data=[], handle=None, limit=False):
         return None
     if data:
         items = create_listitems(data)
-        items = [(i.getProperty("path"), i, bool(i.getProperty("directory"))) for i in items]
         xbmcplugin.addDirectoryItems(handle=handle,
-                                     items=items,
+                                     items=[(i.getProperty("path"), i, False) for i in items],
                                      totalItems=len(items))
     xbmcplugin.endOfDirectory(handle)
 
@@ -73,6 +72,7 @@ def create_listitems(data=None):
                 listitem.setPath(path=path)
                 listitem.setProperty('path', path)
         listitem.setProperty("index", str(count))
+        listitem.setProperty("isPlayable", "false")
         itemlist.append(listitem)
     return itemlist
 
@@ -97,11 +97,7 @@ class Main:
         self.handle = int(sys.argv[1])
         self.infos = []
         self.params = {"handle": self.handle}
-        if args.startswith("---"):
-            delimiter = "&"
-            args = args[3:]
-        else:
-            delimiter = "&&"
+        delimiter = "&&"
         for arg in args.split(delimiter):
             param = arg.replace('"', '').replace("'", " ")
             if param.startswith('info='):
@@ -111,6 +107,7 @@ class Main:
                     self.params[param.split("=")[0].lower()] = "=".join(param.split("=")[1:]).strip()
                 except:
                     pass
+
 
 if (__name__ == "__main__"):
     Main()
