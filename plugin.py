@@ -31,8 +31,7 @@ def start_info_actions(infos, params):
                                           succeeded=False,
                                           listitem=xbmcgui.ListItem())
             try:
-                window_id = xbmcgui.getCurrentWindowDialogId()
-                window = xbmcgui.Window(window_id)
+                window = xbmcgui.Window(10103)
             except Exception:
                 return None
             window.setFocusId(300)
