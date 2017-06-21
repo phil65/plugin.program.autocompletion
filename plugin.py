@@ -33,7 +33,7 @@ def start_info_actions(infos, params):
             try:
                 window_id = xbmcgui.getCurrentWindowDialogId()
                 window = xbmcgui.Window(window_id)
-            except:
+            except Exception:
                 return None
             window.setFocusId(300)
             get_kodi_json(method="Input.SendText",
@@ -94,7 +94,7 @@ if (__name__ == "__main__"):
         else:
             try:
                 params[param.split("=")[0].lower()] = "=".join(param.split("=")[1:]).strip()
-            except:
+            except Exception:
                 pass
     if infos:
         start_info_actions(infos, params)
