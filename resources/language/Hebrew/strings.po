@@ -27,7 +27,7 @@ msgid ""
 "This script offers various possibilities to display online content inside "
 "Needs skin support for most functions."
 msgstr ""
-"קובץ script זה מציע אפשרויות שונות להצגת תוכן מקוון. הסקריפט דורש תמיכה "
+"קובץ  זה מציע אפשרויות שונות להצגת תוכן מקוון. הסקריפט דורש תמיכה "
 "של המעטפת עבור רוב הפונקציות."
 
 msgctxt "#32001"
