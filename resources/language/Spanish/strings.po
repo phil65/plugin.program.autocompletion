@@ -37,4 +37,4 @@ msgstr "Idioma de autocompletado"
 
 msgctxt "#32003"
 msgid "Autocompletion provider"
-msgstr "Proveedor de autocompletado"
+msgstr "Proveedor para autocompletado"
