@@ -13,6 +13,8 @@
     <extension point="xbmc.addon.metadata">
         <summary lang="en">AutoCompletion for the virtual keyboard (needs skin support)</summary>
         <description lang="en">AutoCompletion for the virtual keyboard (needs skin support)</description>
+        <summary lang="es_ES">Autocompletar para el teclado virtual (necesita soporte de skin)</summary>
+        <description lang="es_ES">Autocompletar para el teclado virtual (necesita soporte de skin)</description>
         <platform>all</platform>
         <license>GNU GENERAL PUBLIC LICENSE Version 2.1, February 1999</license>
         <source>https://github.com/phil65/plugin.program.autocompletion</source>
