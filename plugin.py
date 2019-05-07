@@ -38,7 +38,10 @@ def start_info_actions(infos, params):
             get_kodi_json(method="Input.SendText",
                           params='{"text":"%s", "done":false}' % params.get("id"))
             return None
-            # xbmc.executebuiltin("SendClick(103,32)")
+
+#abaixo estava comentado
+
+            xbmc.executebuiltin("SendClick(103,32)")
         pass_list_to_skin(data=listitems,
                           handle=params.get("handle", ""),
                           limit=params.get("limit", 20))
