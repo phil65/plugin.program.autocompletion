@@ -5,10 +5,10 @@
         <import addon="script.module.simplejson" version="3.3.0"/>
         <import addon="script.module.autocompletion" version="1.0.0"/>
     </requires>
-    <extension point="xbmc.python.pluginsource" library="plugin.py" />
     <extension point="xbmc.python.script"       library="default.py">
         <provides>executable</provides>
     </extension>
+    <extension point="xbmc.python.pluginsource" library="plugin.py" />
 
     <extension point="xbmc.addon.metadata">
         <summary lang="en">AutoCompletion for the virtual keyboard (needs skin support)</summary>
