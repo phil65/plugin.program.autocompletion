@@ -18,8 +18,9 @@ ADDON_VERSION = ADDON.getAddonInfo('version')
 
 
 def get_kodi_json(method, params):
-    json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "%s", "params": %s, "id": 1}' % (method, params))
-    json_query = unicode(json_query, 'utf-8', errors='ignore')
+    query_params = {"jsonrpc": "2.0", "id": 1, "method": method, "params": params}
+    json_query = xbmc.executeJSONRPC(json.dumps(query_params))
+
     return json.loads(json_query)
 
 
