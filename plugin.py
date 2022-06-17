@@ -26,22 +26,18 @@ def start_info_actions(infos, params):
         if info == 'autocomplete':
             listitems = AutoCompletion.get_autocomplete_items(params["id"], params.get("limit", 10))
         elif info == 'selectautocomplete':
-            if params.get("handle"):
-                xbmcplugin.setResolvedUrl(handle=int(params.get("handle")),
-                                          succeeded=False,
-                                          listitem=xbmcgui.ListItem())
-            try:
-                window = xbmcgui.Window(10103)
-            except Exception:
-                return None
-            window.setFocusId(300)
-            get_kodi_json(method="Input.SendText",
-                          params='{"text":"%s", "done":false}' % params.get("id"))
+            xbmc.executebuiltin('Dialog.Close(busydialog)')
+            xbmc.sleep(500)
+            get_kodi_json(
+                method="Input.SendText",
+                params={"text": params.get("id"), "done": False},
+            )
             return None
-            # xbmc.executebuiltin("SendClick(103,32)")
-        pass_list_to_skin(data=listitems,
-                          handle=params.get("handle", ""),
-                          limit=params.get("limit", 20))
+        pass_list_to_skin(
+            data=listitems,
+            handle=params.get("handle", ""),
+            limit=params.get("limit", 20),
+        )
 
 
 def pass_list_to_skin(data=[], handle=None, limit=False):
@@ -51,9 +47,12 @@ def pass_list_to_skin(data=[], handle=None, limit=False):
         return None
     if data:
         items = create_listitems(data)
-        xbmcplugin.addDirectoryItems(handle=handle,
-                                     items=[(i.getProperty("path"), i, False) for i in items],
-                                     totalItems=len(items))
+        xbmcplugin.addDirectoryItems(
+            handle=handle,
+            items=[(i.getProperty("path"), i, False) for i in items],
+            totalItems=len(items),
+        )
+        xbmc.executebuiltin('Dialog.Close(busydialog)')
     xbmcplugin.endOfDirectory(handle)
 
 
