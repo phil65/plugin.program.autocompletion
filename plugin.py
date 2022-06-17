@@ -3,12 +3,14 @@
 # Copyright (C) 2015 - Philipp Temminghoff <phil65@kodi.tv>
 # This program is Free Software see LICENSE file for details
 
-import sys
 import xbmc
+import xbmcaddon
 import xbmcgui
 import xbmcplugin
-import xbmcaddon
-import simplejson as json
+
+import json
+import sys
+
 import AutoCompletion
 
 ADDON = xbmcaddon.Addon()
@@ -62,10 +64,9 @@ def create_listitems(data=None):
     itemlist = []
     for (count, result) in enumerate(data):
         listitem = xbmcgui.ListItem(str(count))
-        for (key, value) in result.iteritems():
+        for (key, value) in result.items():
             if not value:
                 continue
-            value = unicode(value)
             if key.lower() in ["label"]:
                 listitem.setLabel(value)
             elif key.lower() in ["search_string"]:
@@ -98,4 +99,3 @@ if (__name__ == "__main__"):
         start_info_actions(infos, params)
 
 xbmc.log('finished')
-
