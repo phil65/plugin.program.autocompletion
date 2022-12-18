@@ -37,6 +37,8 @@ def start_info_actions(infos, params):
                 method="Input.SendText",
                 params={"text": params.get("id"), "done": False},
             )
+            xbmc.executebuiltin('ActivateWindowAndFocus(virtualkeyboard,300,0)')
+
         pass_list_to_skin(
             data=listitems,
             handle=params.get("handle", ""),
